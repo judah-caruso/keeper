@@ -74,10 +74,11 @@ func getCoinData() string {
 	}
 	if all {
 		for x := 0; x < len(coin); x++ {
-			header += fmt.Sprintf("Name: %v [%v]\nPrice (USD): $%s\nChange (24h): %v%%\n---\n",
+			header += fmt.Sprintf("Name: %v [%v]\nPrice (USD): $%s\nChange (1h): %v%%\nChange (24h): %v%%\n---\n",
 				coin[x].Name,
 				coin[x].Symbol,
 				coin[x].PriceUSD,
+				coin[x].Change1h,
 				coin[x].Change24h)
 		}
 	} else {
