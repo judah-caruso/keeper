@@ -12,8 +12,8 @@ Keeper is a Cryptocurrency status tool. It uses the [CoinMarketCap](https://coin
 
 ## Use:
 
-`-h, --help` Basically displays this.
-`-v, --version` Prints the current version of Keeper.
+`-h, --help` Basically displays this.  
+`-v, --version` Prints the current version of Keeper.  
 `-c, --currency` Changes the tracked Cryptocurrency. If set to `top`, it will track the top 50 Cryptocurrencies (according to CoinMarketCap).  
 
 ## Examples:
