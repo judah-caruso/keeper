@@ -38,7 +38,6 @@ Name: Ripple [XRP] (2)
 Price (USD): $3.48639
 Change (24h): 10.2%
 ---
-# apps
 Name: Ethereum [ETH] (3)
 Price (USD): $995.801
 Change (24h): 5.21%
