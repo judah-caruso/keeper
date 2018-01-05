@@ -61,6 +61,7 @@ Change (24h): 13.4%
 * Added rank of currencies if multiple are being tracked.
 * Changed `top` to `all` if `-c` is used.
 * Changed default value of `all` from 50 to 10. It can now also be changed with `-a [number]`
+* Fixed version flag being unuseable unless `-c [crypto]` was used first.
 
 **0.1.2**  
 * Initial release.
