@@ -11,12 +11,14 @@ import (
 	"time"
 )
 
-const ver = "0.1.2"
+const ver = "0.2.0"
 
 var (
 	app       = kingpin.New("Keeper", "Cryptocurrency status tool.")
 	version   = kingpin.Flag("version", "Prints current version of Keeper.").Short('v').Bool()
-	currency  = kingpin.Flag("currency", "Change tracked currency (ex: bitcoin).").Short('c').Required().String()
+	currency  = kingpin.Flag("currency", "Changes tracked currency. (ex: bitcoin)").Short('c').Required().String()
+	interval  = kingpin.Flag("interval", "Time (minutes) before updating tracker.").Short('i').Default("1").Int()
+	amount    = kingpin.Flag("amount", "Number of top currencies to track. (default: 10)").Short('a').Default("10").Int()
 	shortHelp = kingpin.CommandLine.HelpFlag.Short('h')
 )
 
@@ -40,16 +42,22 @@ type Coin []struct {
 
 func getCoinData() string {
 	var url string
+	var amt int = *amount
 	var all bool
 	var header string
 	var coin Coin
 
-	if *currency == "top" {
-		url = fmt.Sprintf("https://api.coinmarketcap.com/v1/ticker/?limit=50")
+	if *currency == "all" {
+		url = fmt.Sprintf("https://api.coinmarketcap.com/v1/ticker/?limit=%v", amt)
 		all = true
 	} else {
 		url = fmt.Sprintf("https://api.coinmarketcap.com/v1/ticker/%s", *currency)
 		all = false
+	}
+
+	if *interval < 1 {
+		fmt.Println("Invalid interval! Please try again.")
+		os.Exit(1)
 	}
 
 	res, err := http.Get(url)
@@ -74,9 +82,10 @@ func getCoinData() string {
 	}
 	if all {
 		for x := 0; x < len(coin); x++ {
-			header += fmt.Sprintf("Name: %v [%v]\nPrice (USD): $%s\nChange (1h): %v%%\nChange (24h): %v%%\n---\n",
+			header += fmt.Sprintf("Name: %v [%v] (%v)\nPrice (USD): $%s\nChange (1h): %v%%\nChange (24h): %v%%\n---\n",
 				coin[x].Name,
 				coin[x].Symbol,
+				coin[x].Rank,
 				coin[x].PriceUSD,
 				coin[x].Change1h,
 				coin[x].Change24h)
@@ -96,14 +105,18 @@ func getCoinData() string {
 func checkFlags() {
 	writer := uilive.New()
 	writer.Start()
+
 	kingpin.Parse()
+
+	fmt.Fprintln(writer, "Connecting...")
+
 	switch {
 	case *version:
 		fmt.Println(ver)
 	case *currency != "":
 		for {
 			fmt.Fprintf(writer, "%v", getCoinData())
-			time.Sleep(1 * time.Minute)
+			time.Sleep(time.Duration(*interval) * time.Minute)
 		}
 	}
 }
