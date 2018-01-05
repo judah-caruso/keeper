@@ -58,7 +58,7 @@ Change (24h): 13.4%
 **0.2.0**  
 * Added `-i, --interval` flag which changes the tracker's update time.
 * Added `-a, --amount` flag which changes the number of top currencies tracked.
-* Added rank of coins if multiple are being tracked.
+* Added rank of currencies if multiple are being tracked.
 * Changed `top` to `all` if `-c` is used.
 * Changed default value of `all` from 50 to 10. It can now also be changed with `-a [number]`
 
