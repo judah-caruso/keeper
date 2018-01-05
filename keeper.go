@@ -16,7 +16,7 @@ const ver = "0.2.0"
 var (
 	app       = kingpin.New("Keeper", "Cryptocurrency status tool.")
 	version   = kingpin.Flag("version", "Prints current version of Keeper.").Short('v').Bool()
-	currency  = kingpin.Flag("currency", "Changes tracked currency. (ex: bitcoin)").Short('c').Required().String()
+	currency  = kingpin.Flag("currency", "Changes tracked currency. (ex: bitcoin)").Short('c').Default("all").String()
 	interval  = kingpin.Flag("interval", "Time (minutes) before updating tracker.").Short('i').Default("1").Int()
 	amount    = kingpin.Flag("amount", "Number of top currencies to track. (default: 10)").Short('a').Default("10").Int()
 	shortHelp = kingpin.CommandLine.HelpFlag.Short('h')
