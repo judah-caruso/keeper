@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const ver = "0.2.0"
+const ver = "0.2.1"
 
 var (
 	app       = kingpin.New("Keeper", "Cryptocurrency status tool.")
