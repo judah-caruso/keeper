@@ -1,10 +1,10 @@
 # README
 
-Keeper is a Cryptocurrency status tool using the [CoinMarketCap](https://coinmarketcap.com) API.
+Keeper is a cryptocurrency status tool using the [CoinMarketCap](https://coinmarketcap.com) API.
 
 ## Requirements:
 
-* Go 1.9.2 or higher
+* Go 1.10.1 or higher
 
 ## Installation:
 
@@ -12,10 +12,16 @@ Keeper is a Cryptocurrency status tool using the [CoinMarketCap](https://coinmar
 
 ## Use:
 
-`-h, --help` Basically displays this.  
+`-h, --help` Displays this.  
 `-v, --version` Prints the current version of Keeper.  
-`-c, --currency` Changes the tracked Cryptocurrency. If set to `all`, Keeper will track the top 10 (unless changed by `-a`) Cryptocurrencies (according to CoinMarketCap).  
-`-a --amount` Sets the number of currencies `-c all` will track. If `-c all` isn't used, this will have no effect.
+`-c, --currency` Changes the tracked cryptocurrency. If set to `all`, Keeper will track the top 10 (unless changed by `-n`) cryptocurrencies (according to CoinMarketCap).  
+`-n --number` Sets the number of currencies `-c all` will track. If `-c all` isn't used, this will have no effect.
+
+Set a default currency to track with:
+```
+[user@computer]$ export KEEPER_FAVORITE=Ethereum
+```
+To set a favorite permanently, add it to your bash_profile (or equivalent).
 
 ## Examples:
 
@@ -53,7 +59,30 @@ Change (24h): 13.4%
 ...
 ```
 
+```
+[user@computer]$ keeper -c all -n 3
+Name: Bitcoin [BTC] (1)                                                   
+Price (USD): $8068.52                                
+Change (1h): -1.9%                                  
+Change (24h): -3.09%                                     
+---                                   
+Name: Ethereum [ETH] (2)                                                    
+Price (USD): $673.196                               
+Change (1h): -2.15%                                  
+Change (24h): -3.96%                                    
+---                                   
+Name: Ripple [XRP] (3)                                                    
+Price (USD): $0.664309                                 
+Change (1h): -1.53%                                 
+Change (24h): -4.88%                                    
+---
+```
+
 # CHANGELOG
+
+**0.2.2**
+* Keeper now looks for a favorite currency using the environment variable `KEEPER_FAVORITE`.
+* Changed the flag `-a, --amount` to `-n, --number`.
 
 **0.2.0**  
 * Added `-i, --interval` flag which changes the tracker's update time.
@@ -61,7 +90,7 @@ Change (24h): 13.4%
 * Added rank of currencies if multiple are being tracked.
 * Changed `top` to `all` if `-c` is used.
 * Changed default value of `all` from 50 to 10. It can now also be changed with `-a [number]`
-* Fixed version flag being unuseable unless `-c [crypto]` was used first.
+* Fixed version flag being unusable unless `-c [crypto]` was used first.
 
 **0.1.2**  
 * Initial release.

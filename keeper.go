@@ -11,15 +11,15 @@ import (
 	"time"
 )
 
-const ver = "0.2.1"
+const ver = "0.2.2"
 
 var (
-	app       = kingpin.New("Keeper", "Cryptocurrency status tool.")
-	version   = kingpin.Flag("version", "Prints current version of Keeper.").Short('v').Bool()
-	currency  = kingpin.Flag("currency", "Changes tracked currency. (ex: bitcoin)").Short('c').Default("all").String()
+	app       = kingpin.New("Keeper", "A cryptocurrency status tool.")
+	number    = kingpin.Flag("number", "Number of top currencies to track. (default: 5)").Short('n').Default("5").Int()
+	currency  = kingpin.Flag("currency", "Changes tracked currency. Defaults to system favorite if set in bash profile.").Default(" ").Short('c').String()
 	interval  = kingpin.Flag("interval", "Time (minutes) before updating tracker.").Short('i').Default("1").Int()
-	amount    = kingpin.Flag("amount", "Number of top currencies to track. (default: 10)").Short('a').Default("10").Int()
 	shortHelp = kingpin.CommandLine.HelpFlag.Short('h')
+	version   = kingpin.Flag("version", "Prints current version of Keeper.").Short('v').Bool()
 )
 
 type Coin []struct {
@@ -42,16 +42,21 @@ type Coin []struct {
 
 func getCoinData() string {
 	var url string
-	var amt int = *amount
+	var amt int = *number
 	var all bool
 	var header string
 	var coin Coin
 
-	if *currency == "all" {
+	if *currency == " " || *currency == "all" {
 		url = fmt.Sprintf("https://api.coinmarketcap.com/v1/ticker/?limit=%v", amt)
 		all = true
 	} else {
 		url = fmt.Sprintf("https://api.coinmarketcap.com/v1/ticker/%s", *currency)
+		all = false
+	}
+
+	if os.Getenv("KEEPER_FAVORITE") != "" && *currency == " " {
+		url = fmt.Sprintf("https://api.coinmarketcap.com/v1/ticker/%s", os.Getenv("KEEPER_FAVORITE"))
 		all = false
 	}
 
